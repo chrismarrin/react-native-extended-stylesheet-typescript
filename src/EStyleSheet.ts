@@ -13,7 +13,6 @@
  const BUILD_EVENT = 'build';
 
  export type NamedStyles<T> = { [P in keyof T]: ViewStyle | TextStyle | ImageStyle };
- type MediaQuery = 
 
  export class EStyleSheet {
 
@@ -72,7 +71,7 @@
     * @returns {*}
     */
    value(expr, prop) {
-     let varsArr = this.globalVars ? [this.globalVars] : [];
+     const varsArr = this.globalVars ? [this.globalVars] : [];
      return new Value(expr, prop, varsArr).calc();
    }
  
