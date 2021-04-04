@@ -1,12 +1,14 @@
 import { useEffect, useState } from 'react';
 import { EStyleSheet, NamedStyles } from '../EStyleSheet';
 
-type AnyObject<T = {}> = T & {[key: string]: any};
+type AnyObject<T = {}> = T & { [key: string]: any };
 type NamedAny<T = {}> = NamedStyles<T> | NamedStyles<any>;
 
 // type DynamicStylesHook<T extends NamedAny<T> = {}> = ( computeStylesMethod: () => T ) => T;
 
-export function useDynamicStyles<T extends NamedAny<T>> (computeStylesMethod: () => T): T {
+export function useDynamicStyles<T extends NamedAny<T>>(
+    computeStylesMethod: () => T
+): T {
     const [styles, setStyles] = useState<T>(computeStylesMethod());
 
     const styleChangeCallback = () => {
@@ -22,4 +24,4 @@ export function useDynamicStyles<T extends NamedAny<T>> (computeStylesMethod: ()
     }, []);
 
     return styles;
-};
+}
