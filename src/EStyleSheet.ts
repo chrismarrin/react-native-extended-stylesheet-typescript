@@ -13,7 +13,8 @@ import child from './child';
 const BUILD_EVENT = 'build';
 
 export type NamedStyles<T> = {
-    [P in keyof T]: P extends `@media${infer _}` ? NamedStyles<T>
+    // [P in keyof T]: P extends `@media${infer _}` ? NamedStyles<T>
+    [P in keyof T]: P extends `@media${infer _}` ? NamedStyles<{ [K in MediaQuery2<keyof T>]: T[K] }>
      : ViewStyle | TextStyle | ImageStyle;
 };
 
@@ -69,7 +70,7 @@ export class EStyleSheet {
     static instance: EStyleSheet = null;
     private child;
     private built: boolean;
-    private sheets: any[];
+    private sheets: Sheet[];
     private globalVars = null;
     private listeners = {};
     /**
