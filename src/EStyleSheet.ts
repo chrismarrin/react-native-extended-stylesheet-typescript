@@ -29,7 +29,6 @@ type Thingy<T> = {
     [Key in MediaQuery2<keyof T>]: ViewStyle | TextStyle | ImageStyle
 }
 
-type Never<T> = never;
 
 // type HopefullyUnnecessaryLayer<T> = 
 
@@ -166,12 +165,12 @@ export class EStyleSheet {
     /**
      * Clears all cached styles.
      */
-    clearCache() {
+    clearCache(): void {
         this.sheets.forEach((sheet) => sheet.clearCache());
     }
 
     // todo: move global vars stuff to separate module
-    _calcGlobalVars(rawGlobalVars) {
+    _calcGlobalVars(rawGlobalVars): void {
         if (rawGlobalVars) {
             this._checkGlobalVars(rawGlobalVars);
             // $theme is system variable used for caching
@@ -182,17 +181,17 @@ export class EStyleSheet {
         }
     }
 
-    _calcSheets() {
+    _calcSheets(): void {
         this.sheets.forEach((sheet) => sheet.calc(this.globalVars));
     }
 
-    _callListeners(event) {
+    _callListeners(event): void {
         if (Array.isArray(this.listeners[event])) {
             this.listeners[event].forEach((listener) => listener());
         }
     }
 
-    _proxyToOriginal() {
+    _proxyToOriginal(): void {
         // see: https://facebook.github.io/react-native/docs/stylesheet.html
         const props = [
             'setStyleAttributePreprocessor',
@@ -209,7 +208,7 @@ export class EStyleSheet {
         });
     }
 
-    _checkGlobalVars(rawGlobalVars) {
+    _checkGlobalVars(rawGlobalVars): void {
         Object.keys(rawGlobalVars).forEach((key) => {
             if (!vars.isVar(key) && !mq.isMediaQuery(key)) {
                 throw new Error(
@@ -220,7 +219,7 @@ export class EStyleSheet {
         });
     }
 
-    _assertSubscriptionParams(event, listener) {
+    _assertSubscriptionParams(event, listener): void {
         if (event !== BUILD_EVENT) {
             throw new Error(
                 `Only '${BUILD_EVENT}' event is currently supported.`
