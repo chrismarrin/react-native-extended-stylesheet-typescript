@@ -2,6 +2,13 @@
 
 I've built this repo to add some love to an absolutely amazing library [react-native-extended-stylesheet](https://github.com/vitalets/react-native-extended-stylesheet/). While using EStyleSheet, it bugged me I didn't get the lovely typings and code complete that you got using react-native's StyleSheet class. So I decided to see if I could make it happen.
 
+## RNEST Roadmap
+
+### 0.4.0
+
+-   Bring existing tests in from RNES repo.
+-   Ensure that typings are valid for all valid inputs (I know for sure it doesn't yet support putting strings in number props yet)
+
 # React Native Extended StyleSheet
 
 [![Build Status](https://travis-ci.org/vitalets/react-native-extended-stylesheet.svg?branch=master)](https://travis-ci.org/vitalets/react-native-extended-stylesheet)
@@ -607,7 +614,8 @@ EStyleSheet supports HMR with the following options:
 1.  When you change style of component - the component is updated by HMR automatically without any effort from your side.
 2.  When you change global variable or theme - you should use [HMR API](https://facebook.github.io/react-native/releases/next/#hmr-api)
     to force style re-calculation:
-    ```js
+
+    ````js
     // app.js
     EStyleSheet.build({
     $fontColor: 'black'
@@ -619,8 +627,9 @@ EStyleSheet supports HMR with the following options:
           EStyleSheet.build(); // force style re-calculation
         });
         ```
-    See full example of HMR [here](examples/hmr).  
+    See full example of HMR [here](examples/hmr).
     \[[top](#react-native-extended-stylesheet)\]
+    ````
 
 ## EStyleSheet API
 
