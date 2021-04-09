@@ -13,58 +13,21 @@ import child from './child';
 const BUILD_EVENT = 'build';
 
 export type NamedStyles<T> = {
-    // [P in keyof T]: P extends `@media${infer _}` ? NamedStyles<T>
-    [P in keyof T]: P extends `@media${infer _}` ? NamedStyles<{ [K in MediaQuery2<keyof T>]: T[K] }>
+    [P in keyof T]: P extends `@media${string}` ? MediaQueryStyles<T[P]>
      : ViewStyle | TextStyle | ImageStyle;
 };
 
-export type TestType<T, P extends keyof T = keyof T> = [T, P];
+type RemoveMediaQueries<Q> = Q extends `@media${string}` ? never : Q;
 
-export type AnotherThing<T extends string, P extends string> = [T, P]
+type CreateReturnType<T> = {
+    [Key in RemoveMediaQueries<keyof T>]: ViewStyle | TextStyle | ImageStyle
+}
 
-type MediaQuery<Q> = Q extends `@media${infer Rest}` ? AnotherThing<Rest, 'mediaquery'>  : 'style'
-type MediaQuery2<Q> = Q extends `@media${infer _}` ? never : Q;
-
-type Thingy<T> = {
-    [Key in MediaQuery2<keyof T>]: ViewStyle | TextStyle | ImageStyle
+type MediaQueryStyles<T> = {
+    [Key in keyof T]: ViewStyle | TextStyle | ImageStyle
 }
 
 
-// type HopefullyUnnecessaryLayer<T> = 
-
-// type ExtractMediaQueries<A> = A extends 
-type ExtractMediaQueries<T, Q> = [T,Q]
-
-type GetMediaQuery<Key extends keyof Type, Type> = Key extends `@media ${infer Q}` 
-? ExtractMediaQueries<Type, Q>
-: Type[Key];
-
-type TestThingy = Thingy<{
-    pork: {
-        chop: "sandwich",
-    },
-    '@media (min-width 800)': {
-        pork: {
-            chop: "sandwich"
-        }
-    }
-}>;
-
-type ExcludeTypeKey<K> = K extends "type" ? never : K;
-
-type Dib = ExcludeTypeKey<"emailAddress" | "type" | "foo">
-
-type ExcludeTypeField<A> = {
-    [K in ExcludeTypeKey<keyof A>]: A[K]
-}
-
-type Dib2 = ExcludeTypeField<{ type: "LOG_IN"; emailAddress: string }>;
-export type FinalCizzount = MediaQuery<"@media no clowns">;
-export type UltimateCizzount = MediaQuery2<"border">;
-// [P extends `@media${infer Rest}`]: NamedStyles
-// [P in keyof T]: ViewStyle | TextStyle | ImageStyle;
-
-// type ExtendedStyleSheet<T> = T extends `@media${infer Rest}` ? 
 export class EStyleSheet {
     static instance: EStyleSheet = null;
     private child;
@@ -85,15 +48,6 @@ export class EStyleSheet {
         this._proxyToOriginal();
     }
 
-    createThing<T extends TestType<T>>( thatThing: T | TestType<T> ): T {
-        const sheet = new Sheet(thatThing);
-        // todo: add options param to allow create dynamic stylesheets that should not be stored
-        this.sheets.push(sheet);
-        if (this.built) {
-            sheet.calc(this.globalVars);
-        }
-        return sheet.getResult();
-    }
     /**
      * Creates stylesheet that will be calculated after build
      * @param {Object} obj
@@ -101,8 +55,8 @@ export class EStyleSheet {
      */
 
     create<T extends NamedStyles<T>>(
-        styles: T
-    ): Thingy<T> {
+        styles: T | NamedStyles<T>
+    ): CreateReturnType<T> {
         const sheet = new Sheet(styles);
         // todo: add options param to allow create dynamic stylesheets that should not be stored
         this.sheets.push(sheet);

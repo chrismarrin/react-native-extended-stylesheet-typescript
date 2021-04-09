@@ -1,6 +1,6 @@
 {
     "name": "react-native-extended-stylesheet-typescript",
-    "version": "0.2.0",
+    "version": "0.3.0",
     "description": "Full TypeScript implementation of EStyleSheet for React Native (Web).",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
@@ -8,7 +8,8 @@
     "license": "MIT",
     "private": true,
     "scripts": {
-        "build": "rimraf dist && tsc"
+        "build": "rimraf dist && tsc",
+        "watch": "tsc --watch"
     },
     "dependencies": {
         "css-mediaquery": "^0.1.2",
