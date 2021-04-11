@@ -2,30 +2,17 @@
  * Extended StyleSheet API
  */
 
-import { ImageStyle, StyleSheet, TextStyle, ViewStyle } from 'react-native';
+import { StyleSheet } from 'react-native';
 import Sheet from './sheet';
 import Style from './style';
 import Value from './value';
 import vars from './replacers/vars';
 import mq from './replacers/mediaqueries';
 import child from './child';
+import { CreateReturnType, NamedStyles } from './types';
 
 const BUILD_EVENT = 'build';
 
-export type NamedStyles<T> = {
-    [P in keyof T]: P extends `@media${string}` ? MediaQueryStyles<T[P]>
-     : ViewStyle | TextStyle | ImageStyle;
-};
-
-type RemoveMediaQueries<Q> = Q extends `@media${string}` ? never : Q;
-
-type CreateReturnType<T> = {
-    [Key in RemoveMediaQueries<keyof T>]: ViewStyle | TextStyle | ImageStyle
-}
-
-type MediaQueryStyles<T> = {
-    [Key in keyof T]: ViewStyle | TextStyle | ImageStyle
-}
 
 
 export class EStyleSheet {
