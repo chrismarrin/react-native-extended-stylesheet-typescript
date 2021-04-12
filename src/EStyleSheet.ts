@@ -2,14 +2,14 @@
  * Extended StyleSheet API
  */
 
-import { StyleSheet } from 'react-native';
+import { StyleProp, StyleSheet } from 'react-native';
 import Sheet from './sheet';
 import Style from './style';
 import Value from './value';
 import vars from './replacers/vars';
 import mq from './replacers/mediaqueries';
 import child from './child';
-import { CreateReturnType, NamedStyles } from './types';
+import { CreateReturnType, NamedStyles, PrimitiveType, RawGlobalVars } from './types';
 
 const BUILD_EVENT = 'build';
 
@@ -22,6 +22,9 @@ export class EStyleSheet {
     private sheets: Sheet[];
     private globalVars = null;
     private listeners = {};
+    public hairlineWidth = StyleSheet.hairlineWidth;
+    public absoluteFill = StyleSheet.absoluteFill;
+    public absoluteFillObject = StyleSheet.hairlineWidth;
     /**
      * Constructor
      */
@@ -32,7 +35,6 @@ export class EStyleSheet {
         this.sheets = [];
         this.globalVars = null;
         this.listeners = {};
-        this._proxyToOriginal();
     }
 
     /**
@@ -57,7 +59,7 @@ export class EStyleSheet {
      * Builds all created stylesheets with passed variables
      * @param {Object} [rawGlobalVars]
      */
-    build(rawGlobalVars) {
+    build<T extends RawGlobalVars<T>>(rawGlobalVars?: T | RawGlobalVars<T>): void {
         this.built = true;
         this._calcGlobalVars(rawGlobalVars);
         this._calcSheets();
@@ -70,7 +72,7 @@ export class EStyleSheet {
      * @param {String} [prop]
      * @returns {*}
      */
-    value(expr, prop) {
+    value(expr: string, prop?: string): PrimitiveType {
         const varsArr = this.globalVars ? [this.globalVars] : [];
         return new Value(expr, prop, varsArr).calc();
     }
@@ -80,7 +82,7 @@ export class EStyleSheet {
      * @param {String} event
      * @param {Function} listener
      */
-    subscribe(event, listener) {
+    subscribe(event: string, listener: () => void): void {
         this._assertSubscriptionParams(event, listener);
         this.listeners[BUILD_EVENT] = this.listeners[BUILD_EVENT] || [];
         this.listeners[BUILD_EVENT].push(listener);
@@ -94,7 +96,7 @@ export class EStyleSheet {
      * @param {String} event
      * @param {Function} listener
      */
-    unsubscribe(event, listener) {
+    unsubscribe(event: string, listener: () => void): void {
         this._assertSubscriptionParams(event, listener);
         if (this.listeners[BUILD_EVENT]) {
             this.listeners[BUILD_EVENT] = this.listeners[BUILD_EVENT].filter(
@@ -103,6 +105,14 @@ export class EStyleSheet {
         }
     }
 
+    setStyleAttributePreprocessor( property: string, process: ( nextProp: unknown ) => unknown ): void {
+        StyleSheet.setStyleAttributePreprocessor( property, process );
+    }
+
+    flatten<T>(style?: StyleProp<T>): T extends (infer U)[] ? U : T {
+        return StyleSheet.flatten(style);
+    }
+    
     /**
      * Clears all cached styles.
      */
@@ -130,23 +140,6 @@ export class EStyleSheet {
         if (Array.isArray(this.listeners[event])) {
             this.listeners[event].forEach((listener) => listener());
         }
-    }
-
-    _proxyToOriginal(): void {
-        // see: https://facebook.github.io/react-native/docs/stylesheet.html
-        const props = [
-            'setStyleAttributePreprocessor',
-            'hairlineWidth',
-            'absoluteFill',
-            'absoluteFillObject',
-            'flatten',
-        ];
-        props.forEach((prop) => {
-            Object.defineProperty(this, prop, {
-                get: () => StyleSheet[prop],
-                enumerable: true,
-            });
-        });
     }
 
     _checkGlobalVars(rawGlobalVars): void {

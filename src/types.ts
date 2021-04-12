@@ -35,3 +35,13 @@ export type NamedStyles<T> = {
         ? PrimitiveType
         : ExtendedStyleType;
 };
+
+export type DollarSignString = `$${string}`;
+
+export type RawGlobalVars<T> = {
+    [P in keyof T]: P extends `$${string}` 
+        ? PrimitiveType
+        : P extends `@media${string}`
+        ? RawGlobalVars<T[P]>
+        : never ; 
+}

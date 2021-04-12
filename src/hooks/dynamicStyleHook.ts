@@ -1,15 +1,13 @@
 import { useEffect, useState } from 'react';
-import { EStyleSheet, NamedStyles } from '../EStyleSheet';
-
-type AnyObject<T = {}> = T & { [key: string]: any };
-type NamedAny<T = {}> = NamedStyles<T> | NamedStyles<any>;
+import { EStyleSheet } from '../EStyleSheet';
+import { NamedStyles } from '../types';
 
 // type DynamicStylesHook<T extends NamedAny<T> = {}> = ( computeStylesMethod: () => T ) => T;
 
-export function useDynamicStyles<T extends NamedAny<T>>(
-    computeStylesMethod: () => T
-): T {
-    const [styles, setStyles] = useState<T>(computeStylesMethod());
+export function useDynamicStyles<T extends NamedStyles<T>>(
+    computeStylesMethod: () => T | NamedStyles<T>
+): NamedStyles<T> {
+    const [styles, setStyles] = useState<NamedStyles<T>>(computeStylesMethod());
 
     const styleChangeCallback = () => {
         setStyles(computeStylesMethod());

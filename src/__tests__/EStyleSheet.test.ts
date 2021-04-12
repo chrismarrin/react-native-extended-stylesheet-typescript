@@ -88,7 +88,7 @@ describe('EStyleSheet API', function () {
 
     it('styles should have prototype chain (#101)', function () {
       api.build();
-      const styles = api.create({foo: 'bar'});
+      const styles = api.create({$foo: 'bar'});
       expect(typeof styles.hasOwnProperty).toEqual('function');
     });
   });
@@ -225,8 +225,7 @@ describe('EStyleSheet API', function () {
     });
 
     it('should throw error when subscribe to incorrect event', function () {
-      const fn = () => api.subscribe('abc', () => {
-      });
+      const fn = () => api.subscribe('abc', () => console.log("abc"));
       expect(fn).toThrowError('Only \'build\' event is currently supported.');
     });
 
