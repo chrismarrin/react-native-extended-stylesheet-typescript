@@ -2,7 +2,7 @@
  * Extended StyleSheet API
  */
 
-import { StyleProp, StyleSheet } from 'react-native';
+import { ColorValue, StyleProp, StyleSheet } from 'react-native';
 import Sheet from './sheet';
 import Style from './style';
 import Value from './value';
@@ -72,7 +72,7 @@ export class EStyleSheet {
      * @param {String} [prop]
      * @returns {*}
      */
-    value(expr: string, prop?: string): PrimitiveType {
+    value(expr: string, prop?: string): any {
         const varsArr = this.globalVars ? [this.globalVars] : [];
         return new Value(expr, prop, varsArr).calc();
     }

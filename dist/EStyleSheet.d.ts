@@ -2,7 +2,7 @@
  * Extended StyleSheet API
  */
 import { StyleProp, StyleSheet } from 'react-native';
-import { CreateReturnType, NamedStyles, PrimitiveType, RawGlobalVars } from './types';
+import { CreateReturnType, NamedStyles, RawGlobalVars } from './types';
 export declare class EStyleSheet {
     static instance: EStyleSheet;
     private child;
@@ -34,7 +34,7 @@ export declare class EStyleSheet {
      * @param {String} [prop]
      * @returns {*}
      */
-    value(expr: string, prop?: string): PrimitiveType;
+    value(expr: string, prop?: string): any;
     /**
      * Subscribe to event. Currently only 'build' event is supported.
      * @param {String} event
