@@ -25,8 +25,8 @@ export type GetOnlyNumberReturns<T> = {
     [Key in keyof T]: T[Key] extends number ? PrimitiveType : never;
 }
 
-export type ExtendStyle<T> = AddFunctionReturnType<AddStringToNumberReturns<T>>;
-// export type ExtendStyle<T> = AddStringToNumberReturns<T>;
+// export type ExtendStyle<T> = AddFunctionReturnType<AddStringToNumberReturns<T>>;
+export type ExtendStyle<T> = AddStringToNumberReturns<T>;
 
 export type OnlyNumberViewStyle = GetOnlyNumberReturns<ViewStyle>;
 

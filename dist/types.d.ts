@@ -16,7 +16,7 @@ export declare type AddStringToNumberReturns<T> = {
 export declare type GetOnlyNumberReturns<T> = {
     [Key in keyof T]: T[Key] extends number ? PrimitiveType : never;
 };
-export declare type ExtendStyle<T> = AddFunctionReturnType<AddStringToNumberReturns<T>>;
+export declare type ExtendStyle<T> = AddStringToNumberReturns<T>;
 export declare type OnlyNumberViewStyle = GetOnlyNumberReturns<ViewStyle>;
 export declare const onvsTest: OnlyNumberViewStyle;
 export declare const evsTest: ExtendedViewStyle;
