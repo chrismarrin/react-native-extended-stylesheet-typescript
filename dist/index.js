@@ -14,3 +14,4 @@ exports.EStyleSheet = void 0;
 const EStyleSheet_1 = require("./EStyleSheet");
 exports.EStyleSheet = new EStyleSheet_1.EStyleSheet();
 __exportStar(require("./hooks/dynamicStyleHook"), exports);
+__exportStar(require("./types"), exports);
