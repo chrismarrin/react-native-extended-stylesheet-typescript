@@ -1,7 +1,7 @@
 export declare type PrimitiveType = string | number;
 export declare type RemoveMediaQueries<Q> = Q extends `@media${string}` ? never : Q;
 export declare type CreateReturnType<T> = {
-    [Key in RemoveMediaQueries<keyof T>]: ViewStyle | TextStyle | ImageStyle;
+    [Key in RemoveMediaQueries<keyof T>]: any;
 };
 export declare type MediaQueryStyles<T> = {
     [Key in keyof T]: ViewStyle | TextStyle | ImageStyle;
