@@ -1,4 +1,5 @@
 import { ImageStyle, TextStyle,  ViewStyle } from 'react-native';
+import { EStyleSheet } from '.';
 
 export type PrimitiveType = string | number;
 
@@ -20,8 +21,30 @@ export type AddStringToNumberReturns<T> = {
     [Key in keyof T]: T[Key] extends number ? PrimitiveType : T[Key];
 }
 
-export type ExtendStyle<T> = AddFunctionReturnType<AddStringToNumberReturns<T>>;
+export type GetOnlyNumberReturns<T> = {
+    [Key in keyof T]: T[Key] extends number ? PrimitiveType : never;
+}
 
+export type ExtendStyle<T> = AddFunctionReturnType<AddStringToNumberReturns<T>>;
+// export type ExtendStyle<T> = AddStringToNumberReturns<T>;
+
+export type OnlyNumberViewStyle = GetOnlyNumberReturns<ViewStyle>;
+
+export const onvsTest: OnlyNumberViewStyle = {
+    borderRadius: '20px',
+}
+
+
+export const evsTest: ExtendedViewStyle = {
+    borderRadius: '20 px',
+}
+
+export const creatTest = EStyleSheet.create({
+    barkley: {
+        borderRadius: '20 px',
+        backgroundColor: 'fuck',
+    }
+});
 export type ExtendedViewStyle = ExtendStyle<ViewStyle>;
 export type ExtendedTextStyle = ExtendStyle<TextStyle>;
 export type ExtendedImageStyle = ExtendStyle<ImageStyle>;
