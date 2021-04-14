@@ -13,7 +13,19 @@ export declare type AddFunctionReturnType<T> = {
 export declare type AddStringToNumberReturns<T> = {
     [Key in keyof T]: T[Key] extends number ? PrimitiveType : T[Key];
 };
+export declare type GetOnlyNumberReturns<T> = {
+    [Key in keyof T]: T[Key] extends number ? PrimitiveType : never;
+};
 export declare type ExtendStyle<T> = AddFunctionReturnType<AddStringToNumberReturns<T>>;
+export declare type OnlyNumberViewStyle = GetOnlyNumberReturns<ViewStyle>;
+export declare const onvsTest: OnlyNumberViewStyle;
+export declare const evsTest: ExtendedViewStyle;
+export declare const creatTest: CreateReturnType<{
+    barkley: {
+        borderRadius: string;
+        backgroundColor: string;
+    };
+}>;
 export declare type ExtendedViewStyle = ExtendStyle<ViewStyle>;
 export declare type ExtendedTextStyle = ExtendStyle<TextStyle>;
 export declare type ExtendedImageStyle = ExtendStyle<ImageStyle>;
