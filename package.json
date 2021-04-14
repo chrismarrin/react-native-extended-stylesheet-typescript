@@ -1,6 +1,6 @@
 {
     "name": "react-native-extended-stylesheet-typescript",
-    "version": "0.5.8",
+    "version": "0.5.9",
     "description": "Full TypeScript implementation of EStyleSheet for React Native (Web).",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
