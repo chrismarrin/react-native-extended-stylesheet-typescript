@@ -5,7 +5,6 @@ import { StyleProp, StyleSheet } from 'react-native';
 import { CreateReturnType, NamedStyles, RawGlobalVars } from './types';
 export declare class EStyleSheet {
     static instance: EStyleSheet;
-    private child;
     private built;
     private sheets;
     private globalVars;
@@ -35,6 +34,7 @@ export declare class EStyleSheet {
      * @returns {*}
      */
     value(expr: string, prop?: string): any;
+    child(styles: any, styleName: any, index: any, count: any): any;
     /**
      * Subscribe to event. Currently only 'build' event is supported.
      * @param {String} event

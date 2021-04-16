@@ -8,7 +8,6 @@ import Style from './style';
 import Value from './value';
 import vars from './replacers/vars';
 import mq from './replacers/mediaqueries';
-import child from './child';
 import { CreateReturnType, NamedStyles, PrimitiveType, RawGlobalVars } from './types';
 
 const BUILD_EVENT = 'build';
@@ -17,7 +16,6 @@ const BUILD_EVENT = 'build';
 
 export class EStyleSheet {
     static instance: EStyleSheet = null;
-    private child;
     private built: boolean;
     private sheets: Sheet[];
     private globalVars = null;
@@ -30,7 +28,6 @@ export class EStyleSheet {
      */
     constructor() {
         EStyleSheet.instance = this;
-        this.child = child;
         this.built = false;
         this.sheets = [];
         this.globalVars = null;
@@ -77,6 +74,41 @@ export class EStyleSheet {
         return new Value(expr, prop, varsArr).calc();
     }
 
+    child(styles, styleName, index, count): any {
+
+        const addStyle = (result, styles, styleName, condition) => {
+            if (styles[styleName] && condition) {
+                result.push(styles[styleName]);
+            }
+        }
+        
+        const isNumber = (value) => {
+            return typeof value === 'number';
+        }
+        
+        if (!isNumber(index) || !isNumber(count)) {
+            return styles[styleName];
+        }
+    
+        const result = [styles[styleName]];
+    
+        addStyle(result, styles, styleName + ':first-child', index === 0);
+        addStyle(
+            result,
+            styles,
+            styleName + ':nth-child-even',
+            index < count && index % 2 === 0
+        );
+        addStyle(
+            result,
+            styles,
+            styleName + ':nth-child-odd',
+            index < count && index % 2 === 1
+        );
+        addStyle(result, styles, styleName + ':last-child', index === count - 1);
+    
+        return result.length > 1 ? result : result[0];
+    }
     /**
      * Subscribe to event. Currently only 'build' event is supported.
      * @param {String} event

@@ -4,10 +4,10 @@ export declare type CreateReturnType<T> = {
     [Key in RemoveMediaQueries<keyof T>]: any;
 };
 export declare type MediaQueryStyles<T> = {
-    [Key in keyof T]: ViewStyle | TextStyle | ImageStyle;
+    [Key in keyof T]: SuperExtendedType;
 };
 export declare type AddFunctionReturnType<T> = {
-    [Key in keyof T]: T[Key] | (() => T[Key]);
+    [Key in keyof T]: T[Key] | (() => any);
 };
 export declare type AddStringToNumberReturns<T> = {
     [Key in keyof T]: T[Key] extends number ? PrimitiveType : T[Key];

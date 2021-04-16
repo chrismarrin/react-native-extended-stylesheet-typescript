@@ -7,11 +7,11 @@ export type CreateReturnType<T> = {
 };
 
 export type MediaQueryStyles<T> = {
-    [Key in keyof T]: ViewStyle | TextStyle | ImageStyle;
+    [Key in keyof T]: SuperExtendedType;
 };
 
 export type AddFunctionReturnType<T> = {
-    [Key in keyof T]: T[Key] | (() => T[Key]);
+    [Key in keyof T]: T[Key] | (() => any);
 };
 
 export type AddStringToNumberReturns<T> = {

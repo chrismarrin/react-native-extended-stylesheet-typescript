@@ -10,7 +10,6 @@ const style_1 = require("./style");
 const value_1 = require("./value");
 const vars_1 = require("./replacers/vars");
 const mediaqueries_1 = require("./replacers/mediaqueries");
-const child_1 = require("./child");
 const BUILD_EVENT = 'build';
 class EStyleSheet {
     /**
@@ -23,7 +22,6 @@ class EStyleSheet {
         this.absoluteFill = react_native_1.StyleSheet.absoluteFill;
         this.absoluteFillObject = react_native_1.StyleSheet.hairlineWidth;
         EStyleSheet.instance = this;
-        this.child = child_1.default;
         this.built = false;
         this.sheets = [];
         this.globalVars = null;
@@ -62,6 +60,25 @@ class EStyleSheet {
     value(expr, prop) {
         const varsArr = this.globalVars ? [this.globalVars] : [];
         return new value_1.default(expr, prop, varsArr).calc();
+    }
+    child(styles, styleName, index, count) {
+        const addStyle = (result, styles, styleName, condition) => {
+            if (styles[styleName] && condition) {
+                result.push(styles[styleName]);
+            }
+        };
+        const isNumber = (value) => {
+            return typeof value === 'number';
+        };
+        if (!isNumber(index) || !isNumber(count)) {
+            return styles[styleName];
+        }
+        const result = [styles[styleName]];
+        addStyle(result, styles, styleName + ':first-child', index === 0);
+        addStyle(result, styles, styleName + ':nth-child-even', index < count && index % 2 === 0);
+        addStyle(result, styles, styleName + ':nth-child-odd', index < count && index % 2 === 1);
+        addStyle(result, styles, styleName + ':last-child', index === count - 1);
+        return result.length > 1 ? result : result[0];
     }
     /**
      * Subscribe to event. Currently only 'build' event is supported.
