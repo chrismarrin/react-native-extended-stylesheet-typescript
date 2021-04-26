@@ -6,7 +6,6 @@
     "types": "dist/index.d.ts",
     "author": "Chris Marrin",
     "license": "MIT",
-    "private": true,
     "scripts": {
         "build": "rimraf dist && tsc",
         "watch": "tsc --watch"

@@ -1,14 +1,12 @@
-"use strict";
 /**
  * Calculates particular value
  */
-Object.defineProperty(exports, "__esModule", { value: true });
-const rem_1 = require("./replacers/rem");
-const vars_1 = require("./replacers/vars");
-const percent_1 = require("./replacers/percent");
-const operation_1 = require("./replacers/operation");
-const scale_1 = require("./replacers/scale");
-class Value {
+import rem from './replacers/rem';
+import vars from './replacers/vars';
+import percent from './replacers/percent';
+import operation from './replacers/operation';
+import scale from './replacers/scale';
+export default class Value {
     /**
      * Constructor
      *
@@ -83,7 +81,7 @@ class Value {
         return null;
     }
     tryCalcOperation(str) {
-        let opInfo = operation_1.default.isOperation(str);
+        let opInfo = operation.isOperation(str);
         if (!opInfo) {
             return null;
         }
@@ -101,7 +99,7 @@ class Value {
                 return null;
             }
         }
-        return operation_1.default.exec(opInfo);
+        return operation.exec(opInfo);
     }
     calcOperandValue(str) {
         let actions = [
@@ -113,8 +111,8 @@ class Value {
         return this.tryActions(actions, str);
     }
     tryCalcVar(str) {
-        if (vars_1.default.isVar(str)) {
-            let val = vars_1.default.calc(str, this.varsArr);
+        if (vars.isVar(str)) {
+            let val = vars.calc(str, this.varsArr);
             if (this.stack.indexOf(str) >= 0) {
                 throw new Error('Cyclic reference: ' + this.stack.concat([str]).join(' -> '));
             }
@@ -133,8 +131,8 @@ class Value {
      * Tries calc percent
      */
     tryCalcPercent(str) {
-        if (percent_1.default.isPercent(str)) {
-            return percent_1.default.calc(str, this.prop);
+        if (percent.isPercent(str)) {
+            return percent.calc(str, this.prop);
         }
         return null;
     }
@@ -142,9 +140,9 @@ class Value {
      * Tries calc rem
      */
     tryCalcRem(str) {
-        if (rem_1.default.isRem(str)) {
-            let remValue = vars_1.default.get('$rem', this.varsArr);
-            return rem_1.default.calc(str, remValue);
+        if (rem.isRem(str)) {
+            let remValue = vars.get('$rem', this.varsArr);
+            return rem.calc(str, remValue);
         }
         else {
             return null;
@@ -172,16 +170,15 @@ class Value {
     applyScale() {
         // do not apply scale to variables, only for final numbers
         // otherwise scale will be applied several times
-        if (vars_1.default.isVar(this.prop)) {
+        if (vars.isVar(this.prop)) {
             return;
         }
-        let scaleFactor = vars_1.default.get('$scale', this.varsArr) || 1;
+        let scaleFactor = vars.get('$scale', this.varsArr) || 1;
         if (scaleFactor === 1) {
             return;
         }
-        if (scale_1.default.isScalable(this.outValue, this.prop)) {
-            this.outValue = scale_1.default.calc(this.outValue, scaleFactor);
+        if (scale.isScalable(this.outValue, this.prop)) {
+            this.outValue = scale.calc(this.outValue, scaleFactor);
         }
     }
 }
-exports.default = Value;

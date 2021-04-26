@@ -1,11 +1,9 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const react_native_1 = require("react-native");
-const style_1 = require("./style");
-const utils_1 = require("./utils");
-const vars_1 = require("./replacers/vars");
-const mediaqueries_1 = require("./replacers/mediaqueries");
-class default_1 {
+import { StyleSheet } from 'react-native';
+import Style from './style';
+import utils from './utils';
+import vars from './replacers/vars';
+import mediaQueries from './replacers/mediaqueries';
+export default class {
     /**
      * Constructor
      * @param {Object} source
@@ -40,12 +38,12 @@ class default_1 {
         return this.getResult();
     }
     processMediaQueries() {
-        this.processedSource = mediaqueries_1.default.process(this.source);
+        this.processedSource = mediaQueries.process(this.source);
     }
     calcVars() {
-        const rawLocalVars = vars_1.default.extract(this.processedSource);
+        const rawLocalVars = vars.extract(this.processedSource);
         if (rawLocalVars) {
-            this.localVars = new style_1.default(rawLocalVars, [
+            this.localVars = new Style(rawLocalVars, [
                 rawLocalVars,
                 this.globalVars,
             ]).calc().calculatedVars;
@@ -57,7 +55,7 @@ class default_1 {
         this.allVars = [this.localVars, this.globalVars].filter(Boolean);
     }
     calcStyles() {
-        const extractedStyles = utils_1.default.excludeKeys(this.processedSource, this.localVars);
+        const extractedStyles = utils.excludeKeys(this.processedSource, this.localVars);
         Object.keys(extractedStyles).forEach((key) => {
             let styles = extractedStyles[key];
             if (typeof styles === 'function') {
@@ -73,7 +71,7 @@ class default_1 {
         });
     }
     calcStyle(key, styleProps) {
-        const style = new style_1.default(styleProps, this.allVars);
+        const style = new Style(styleProps, this.allVars);
         const { calculatedProps, calculatedVars } = style.calc();
         const merged = Object.assign({}, calculatedVars, calculatedProps);
         if (key.charAt(0) === '_') {
@@ -86,7 +84,7 @@ class default_1 {
     }
     calcNative() {
         if (Object.keys(this.nativeSheet).length) {
-            const rnStyleSheet = react_native_1.StyleSheet.create(this.nativeSheet);
+            const rnStyleSheet = StyleSheet.create(this.nativeSheet);
             Object.assign(this.result, rnStyleSheet);
         }
     }
@@ -117,4 +115,3 @@ class default_1 {
         return this.globalVars && this.globalVars.$theme;
     }
 }
-exports.default = default_1;

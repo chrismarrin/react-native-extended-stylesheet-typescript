@@ -1,8 +1,6 @@
-"use strict";
 /**
  * Scale property if needed
  */
-Object.defineProperty(exports, "__esModule", { value: true });
 const SCALABLE_PROPS = [
     'width',
     'height',
@@ -11,7 +9,7 @@ const SCALABLE_PROPS = [
     'fontsize',
     'radius',
 ];
-exports.default = {
+export default {
     isScalable,
     calc,
 };

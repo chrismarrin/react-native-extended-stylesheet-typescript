@@ -1,13 +1,11 @@
-"use strict";
 /**
  * Style
  */
-Object.defineProperty(exports, "__esModule", { value: true });
-const vars_1 = require("./replacers/vars");
-const mediaqueries_1 = require("./replacers/mediaqueries");
-const value_1 = require("./value");
-const utils_1 = require("./utils");
-class default_1 {
+import vars from './replacers/vars';
+import mediaQueries from './replacers/mediaqueries';
+import Value from './value';
+import utils from './utils';
+export default class {
     /**
      * Constructor
      * @param {Object} source plain object style with variables
@@ -37,10 +35,10 @@ class default_1 {
         };
     }
     processSource() {
-        this.processedSource = mediaqueries_1.default.process(this.source);
+        this.processedSource = mediaQueries.process(this.source);
     }
     calcVars() {
-        this.extractedVars = vars_1.default.extract(this.processedSource);
+        this.extractedVars = vars.extract(this.processedSource);
         if (this.extractedVars) {
             const varsArrForVars = [this.extractedVars].concat(this.varsArr);
             this.calculatedVars = calcPlainObject(this.extractedVars, varsArrForVars);
@@ -48,11 +46,11 @@ class default_1 {
         }
     }
     calcProps() {
-        this.extractedProps = utils_1.default.excludeKeys(this.processedSource, this.extractedVars);
+        this.extractedProps = utils.excludeKeys(this.processedSource, this.extractedVars);
         this.calculatedProps = calcPlainObject(this.extractedProps, this.varsArr);
     }
     tryOutline() {
-        let outline = vars_1.default.get('$outline', this.varsArr);
+        let outline = vars.get('$outline', this.varsArr);
         if (outline) {
             this.calculatedProps.borderWidth =
                 typeof outline === 'number' ? outline : 1;
@@ -60,7 +58,6 @@ class default_1 {
         }
     }
 }
-exports.default = default_1;
 /**
  * Calculates values in plain object
  *
@@ -87,7 +84,7 @@ function calcStyleValue(prop, value, varsArr) {
             : calcPlainObject(value, varsArr);
     }
     else {
-        return new value_1.default(value, prop, varsArr).calc();
+        return new Value(value, prop, varsArr).calc();
     }
 }
 /**

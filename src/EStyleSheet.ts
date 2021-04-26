@@ -2,13 +2,13 @@
  * Extended StyleSheet API
  */
 
-import { ColorValue, StyleProp, StyleSheet } from 'react-native';
+import { StyleProp, StyleSheet } from 'react-native';
 import Sheet from './sheet';
 import Style from './style';
 import Value from './value';
 import vars from './replacers/vars';
 import mq from './replacers/mediaqueries';
-import { CreateReturnType, NamedStyles, PrimitiveType, RawGlobalVars } from './types';
+import { CreateReturnType, NamedStyles, RawGlobalVars } from './types';
 
 const BUILD_EVENT = 'build';
 

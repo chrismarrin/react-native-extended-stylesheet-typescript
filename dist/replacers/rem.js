@@ -1,11 +1,9 @@
-"use strict";
 /**
  * Calculation of REM strings
  */
-Object.defineProperty(exports, "__esModule", { value: true });
 const SUFFIX = 'rem';
 const DEFAULT_REM = 16;
-exports.default = {
+export default {
     isRem,
     calc,
 };

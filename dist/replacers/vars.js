@@ -1,11 +1,9 @@
-"use strict";
 /**
  * Variables
  */
-Object.defineProperty(exports, "__esModule", { value: true });
-const object_resolve_path_1 = require("object-resolve-path");
+import resolvePath from 'object-resolve-path';
 const PREFIX = '$';
-exports.default = {
+export default {
     isVar,
     calc,
     extract,
@@ -65,7 +63,7 @@ function get(name, varsArr) {
             return vars[name];
         }
         try {
-            return object_resolve_path_1.default({ [rootVar]: vars[rootVar] }, name);
+            return resolvePath({ [rootVar]: vars[rootVar] }, name);
         }
         catch (error) {
             return undefined;

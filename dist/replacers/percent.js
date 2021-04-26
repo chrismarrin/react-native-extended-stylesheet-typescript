@@ -1,10 +1,8 @@
-"use strict";
 /**
  * Calculation of percent strings
  */
-Object.defineProperty(exports, "__esModule", { value: true });
-const react_native_1 = require("react-native");
-const { width, height } = react_native_1.Dimensions.get('window');
+import { Dimensions } from 'react-native';
+const { width, height } = Dimensions.get('window');
 const V_PROPS = ['height', 'top', 'bottom', 'vertical'];
 const H_PROPS = ['width', 'left', 'right', 'horizontal'];
 const SUFFIX = '%';
@@ -12,7 +10,7 @@ const invalidPropMsg = [
     `Name of variable or property with percent value should contain `,
     `(${V_PROPS.concat(H_PROPS).join()}) to define base for percent calculation`,
 ].join('');
-exports.default = {
+export default {
     isPercent,
     calc,
 };

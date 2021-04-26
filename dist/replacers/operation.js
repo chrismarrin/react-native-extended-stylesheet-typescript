@@ -1,16 +1,14 @@
-"use strict";
 /**
  * Detects operation in string
  * Supports: '*', '+', '-'
  */
-Object.defineProperty(exports, "__esModule", { value: true });
 const operators = {
     '*': (v1, v2) => v1 * v2,
     '+': (v1, v2) => v1 + v2,
     '-': (v1, v2) => v1 - v2,
     '/': (v1, v2) => v1 / v2,
 };
-exports.default = {
+export default {
     isOperation,
     exec,
 };

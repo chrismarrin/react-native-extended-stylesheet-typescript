@@ -1,26 +1,23 @@
-"use strict";
 /**
  * Extended StyleSheet API
  */
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.EStyleSheet = void 0;
-const react_native_1 = require("react-native");
-const sheet_1 = require("./sheet");
-const style_1 = require("./style");
-const value_1 = require("./value");
-const vars_1 = require("./replacers/vars");
-const mediaqueries_1 = require("./replacers/mediaqueries");
+import { StyleSheet } from 'react-native';
+import Sheet from './sheet';
+import Style from './style';
+import Value from './value';
+import vars from './replacers/vars';
+import mq from './replacers/mediaqueries';
 const BUILD_EVENT = 'build';
-class EStyleSheet {
+export class EStyleSheet {
     /**
      * Constructor
      */
     constructor() {
         this.globalVars = null;
         this.listeners = {};
-        this.hairlineWidth = react_native_1.StyleSheet.hairlineWidth;
-        this.absoluteFill = react_native_1.StyleSheet.absoluteFill;
-        this.absoluteFillObject = react_native_1.StyleSheet.hairlineWidth;
+        this.hairlineWidth = StyleSheet.hairlineWidth;
+        this.absoluteFill = StyleSheet.absoluteFill;
+        this.absoluteFillObject = StyleSheet.hairlineWidth;
         EStyleSheet.instance = this;
         this.built = false;
         this.sheets = [];
@@ -33,7 +30,7 @@ class EStyleSheet {
      * @returns {Object}
      */
     create(styles) {
-        const sheet = new sheet_1.default(styles);
+        const sheet = new Sheet(styles);
         // todo: add options param to allow create dynamic stylesheets that should not be stored
         this.sheets.push(sheet);
         if (this.built) {
@@ -59,7 +56,7 @@ class EStyleSheet {
      */
     value(expr, prop) {
         const varsArr = this.globalVars ? [this.globalVars] : [];
-        return new value_1.default(expr, prop, varsArr).calc();
+        return new Value(expr, prop, varsArr).calc();
     }
     child(styles, styleName, index, count) {
         const addStyle = (result, styles, styleName, condition) => {
@@ -105,10 +102,10 @@ class EStyleSheet {
         }
     }
     setStyleAttributePreprocessor(property, process) {
-        react_native_1.StyleSheet.setStyleAttributePreprocessor(property, process);
+        StyleSheet.setStyleAttributePreprocessor(property, process);
     }
     flatten(style) {
-        return react_native_1.StyleSheet.flatten(style);
+        return StyleSheet.flatten(style);
     }
     /**
      * Clears all cached styles.
@@ -122,7 +119,7 @@ class EStyleSheet {
             this._checkGlobalVars(rawGlobalVars);
             // $theme is system variable used for caching
             rawGlobalVars.$theme = rawGlobalVars.$theme || 'default';
-            this.globalVars = new style_1.default(rawGlobalVars, [
+            this.globalVars = new Style(rawGlobalVars, [
                 rawGlobalVars,
             ]).calc().calculatedVars;
         }
@@ -137,7 +134,7 @@ class EStyleSheet {
     }
     _checkGlobalVars(rawGlobalVars) {
         Object.keys(rawGlobalVars).forEach((key) => {
-            if (!vars_1.default.isVar(key) && !mediaqueries_1.default.isMediaQuery(key)) {
+            if (!vars.isVar(key) && !mq.isMediaQuery(key)) {
                 throw new Error(`EStyleSheet.build() params should contain global variables (start with $) ` +
                     `or media queries (start with @media). Got '${key}'.`);
             }
@@ -152,5 +149,4 @@ class EStyleSheet {
         }
     }
 }
-exports.EStyleSheet = EStyleSheet;
 EStyleSheet.instance = null;

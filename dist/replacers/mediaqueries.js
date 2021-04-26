@@ -1,4 +1,3 @@
-"use strict";
 /**
  * Media queries
  * Supported values:
@@ -8,12 +7,11 @@
  * - orientation
  * - aspect-ratio
  */
-Object.defineProperty(exports, "__esModule", { value: true });
-const react_native_1 = require("react-native");
-const css_mediaquery_1 = require("css-mediaquery");
-const utils_1 = require("../utils");
+import { Dimensions, Platform, I18nManager } from 'react-native';
+import { match } from 'css-mediaquery';
+import utils from '../utils';
 const PREFIX = '@media';
-exports.default = {
+export default {
     isMediaQuery,
     process,
 };
@@ -46,7 +44,7 @@ function process(obj) {
         const matchObject = getMatchObject();
         mqKeys.forEach((key) => {
             const mqStr = key.replace(PREFIX, '');
-            const isMatch = css_mediaquery_1.match(mqStr, matchObject);
+            const isMatch = match(mqStr, matchObject);
             if (isMatch) {
                 merge(res, obj[key]);
             }
@@ -59,14 +57,14 @@ function process(obj) {
  * @returns {Object}
  */
 function getMatchObject() {
-    const win = react_native_1.Dimensions.get('window');
-    const { isRTL } = react_native_1.I18nManager;
+    const win = Dimensions.get('window');
+    const { isRTL } = I18nManager;
     return {
         width: win.width,
         height: win.height,
         orientation: win.width > win.height ? 'landscape' : 'portrait',
         'aspect-ratio': win.width / win.height,
-        type: react_native_1.Platform.OS,
+        type: Platform.OS,
         direction: isRTL ? 'rtl' : 'ltr',
     };
 }
@@ -77,7 +75,7 @@ function getMatchObject() {
  */
 function merge(obj, mqObj) {
     Object.keys(mqObj).forEach((key) => {
-        if (utils_1.default.isObject(obj[key]) && utils_1.default.isObject(mqObj[key])) {
+        if (utils.isObject(obj[key]) && utils.isObject(mqObj[key])) {
             Object.assign(obj[key], mqObj[key]);
         }
         else {

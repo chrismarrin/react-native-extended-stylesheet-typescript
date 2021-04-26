@@ -1,9 +1,7 @@
-"use strict";
 /**
  * Utils
  */
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.default = {
+export default {
     excludeKeys,
     isObject,
 };
